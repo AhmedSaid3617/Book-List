@@ -5,6 +5,7 @@ filename = "Records.xlsx"
 wb = openpyxl.load_workbook(filename)
 sheet = wb.active
 
+
 def record(data):
     sheet[f'A{data.id}'] = data.title
     sheet[f'B{data.id}'] = data.author
@@ -40,7 +41,3 @@ while True:
             print("Deleted successfully")
     else:
         print("Unkown command.")
-
-
-
-print("done")
