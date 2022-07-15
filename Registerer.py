@@ -3,24 +3,40 @@ import openpyxl
 
 filename = "Records.xlsx"
 wb = openpyxl.load_workbook(filename)
-sheet = wb.active
+books_sheet = wb.active
 
 
-def record(data):
-    sheet[f'A{data.id}'] = data.title
-    sheet[f'B{data.id}'] = data.author
-    sheet[f'C{data.id}'] = data.year
+"""def record(data):
+    books_sheet[f'A{data.id}'] = data.title
+    books_sheet[f'B{data.id}'] = data.author
+    books_sheet[f'C{data.id}'] = data.year"""
 
 
 def create_book():
-    max_row = sheet.max_row
+    max_row = books_sheet.max_row
     title = input("Enter book title:")
     author = input("Enter book author:")
     year = input("Enter book year:")
     new_book = Book(max_row+1, title, author, year)
-    record(new_book)
+    new_book.record(books_sheet)
     print("Book recorded successfully.")
 
+
+def rundown():
+    count = 1
+    for row in books_sheet.rows:
+        print(f"{count}  Book: {row[0].value}, Author: {row[1].value}, Year: {row[2].value}")
+        count += 1
+
+
+rundown()
+
+print('\n')
+print("Commands:")
+print("\"new\": to record a new book.")
+print("\"delete {number of book}\": to delete a new book.")
+print("\"rundown\": to displays a list of all books.")
+print("\"close\": to close application.")
 
 while True:
     userInput = input()
@@ -36,8 +52,12 @@ while True:
         subject = userInput.replace("delete ", "")
         if subject.isnumeric():
             id = int(subject)
-            sheet.delete_rows(id)
+            books_sheet.delete_rows(id)
             wb.save(filename)
             print("Deleted successfully")
+
+    elif userInput == "rundown":
+        rundown()
+
     else:
         print("Unkown command.")
